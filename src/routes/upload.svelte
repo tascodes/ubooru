@@ -156,7 +156,7 @@
 					<img
 						src={item.preview}
 						alt=""
-						class="object-scale-down p-4 pointer-events-none group-hover:opacity-75"
+						class="object-contain p-4 pointer-events-none group-hover:opacity-75"
 					/>
 					<button type="button" class="absolute inset-0 focus:outline-none">
 						<span class="sr-only">View details for {item.file.name}</span>

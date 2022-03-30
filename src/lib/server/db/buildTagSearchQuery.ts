@@ -84,9 +84,17 @@ const searchPostsNoCount = ({
 }) => {
 	const query = Prisma.sql`
     SELECT p. *
-    FROM "Post" p, "TagsOnPosts" tp, "Tag" t
-		WHERE p.id = tp."postId"
-    AND tp."tagId" = t.id
+    ${
+			and?.length || not?.length
+				? Prisma.sql`
+					FROM "Post" p, "TagsOnPosts" tp, "Tag" t
+					WHERE p.id = tp."postId"
+					AND tp."tagId" = t.id
+				`
+				: Prisma.sql`
+					FROM "Post" p
+				`
+		}
     ${cursor ? cursorFilter(cursor) : Prisma.sql``}
     ${
 			and?.length ? andTagFilter(and) : Prisma.sql`` // Include all posts with the "and" tags, if there are "and" tags
@@ -123,7 +131,17 @@ const searchPostsWithCount = ({
     SELECT m. *, COUNT(m.id) OVER() as total_rows
     FROM (
       SELECT p. *
-      FROM "Post" p, "TagsOnPosts" tp, "Tag" t
+			${
+				and?.length || not?.length
+					? Prisma.sql`
+						FROM "Post" p, "TagsOnPosts" tp, "Tag" t
+						WHERE p.id = tp."postId"
+    				AND tp."tagId" = t.id
+					`
+					: Prisma.sql`
+						FROM "Post" p
+					`
+			}
       WHERE p.id = tp."postId"
     	AND tp."tagId" = t.id
       ${cursor ? cursorFilter(cursor) : Prisma.sql``}
