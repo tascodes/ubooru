@@ -31,8 +31,6 @@ export const parseTags = (tagQuery: string): ParseTagsResult => {
 		andTags.push(tag);
 	});
 
-	console.log(andTags);
-
 	return {
 		and: andTags,
 		not: notTags,

@@ -106,6 +106,12 @@ export default trpc
 			}
 		}
 	})
+	.query('byId', {
+		input: z.object({ id: z.number() }),
+		resolve: async ({ input }) => {
+			return prisma.post.findFirst({ where: { id: input.id } });
+		}
+	})
 	.query('byTags', {
 		input: z.object({
 			tags: z.string().optional(),

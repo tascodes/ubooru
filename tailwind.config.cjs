@@ -28,6 +28,9 @@ module.exports = {
 			}, */
 
 			focus: colors.sky['500'],
+
+			links: colors.blue['500'],
+
 			inherit: colors.inherit,
 			current: colors.current,
 			transparent: colors.transparent,
