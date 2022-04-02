@@ -33,6 +33,7 @@
 	import { getPosts } from '$lib/client/getPosts';
 	import { goto } from '$app/navigation';
 	import { buildUrl } from '$lib/util/urlBuilder';
+	import { getThumbnail } from '$lib/util/cdn';
 
 	export let posts: Post[];
 	export let search = '';
@@ -51,13 +52,13 @@
 			<ul
 				class="relative grid grid-cols-2 mx-12 gap-x-4 gap-y-8 sm:mx-0 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8"
 			>
-				{#each posts as post}
+				{#each posts as post, idx}
 					<li class="relative">
 						<div
 							class="group block w-full aspect-w-7 aspect-h-7 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-focus overflow-hidden"
 						>
 							<Image
-								src={post?.thumbnailUrl || post?.url || 'fallback.png'}
+								src={getThumbnail(post.imageId)}
 								alt=""
 								parentClasses="object-contain pointer-events-none group-hover:opacity-75"
 							/>

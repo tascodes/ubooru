@@ -33,9 +33,12 @@
 	import Search from '$lib/components/Search.svelte';
 	import { buildUrl } from '$lib/util/urlBuilder';
 	import { goto } from '$app/navigation';
+	import { getSample } from '$lib/util/cdn';
 
 	export let post: Post;
 	export let searchQuery = '';
+
+	let postURL = getSample(post.imageId);
 
 	const onSearch = async (event: CustomEvent<string>) => {
 		const url = buildUrl('/posts', { queryParams: { tags: event.detail.trim() } });
@@ -46,7 +49,7 @@
 <div class="flex-1 relative z-0 flex overflow-hidden min-h-screen">
 	<main class="flex-1 relative z-0 overflow-y-auto focus:outline-none xl:order-last">
 		<div class="my-16 mx-4">
-			<img src={post?.url} alt="" />
+			<img src={postURL} alt="" />
 		</div>
 	</main>
 	<aside
