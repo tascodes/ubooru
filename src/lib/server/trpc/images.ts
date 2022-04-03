@@ -11,7 +11,11 @@ const CLOUDFLARE_IMAGES_ACCOUNT_ID = import.meta.env.VITE_CLOUDFLARE_IMAGES_ACCO
 
 export default createRouter()
 	.query('upload', {
-		resolve: async (): Promise<{ id: string; uploadURL: string }> => {
+		resolve: async ({ ctx }): Promise<{ id: string; uploadURL: string }> => {
+			if (!ctx.user) {
+				throw new TRPCError({ code: 'UNAUTHORIZED' });
+			}
+
 			const directUploadUrl = `https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_IMAGES_ACCOUNT_ID}/images/v2/direct_upload`;
 
 			const response = await fetch(directUploadUrl, {
@@ -34,7 +38,11 @@ export default createRouter()
 			imageId: z.string(),
 			tags: z.array(z.string())
 		}),
-		resolve: async ({ input }): Promise<Post> => {
+		resolve: async ({ input, ctx }): Promise<Post> => {
+			if (!ctx.user) {
+				throw new TRPCError({ code: 'UNAUTHORIZED' });
+			}
+
 			const imageStatusUrl = `https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_IMAGES_ACCOUNT_ID}/images/v1/${input.imageId}`;
 
 			const response = await fetch(imageStatusUrl, {
