@@ -6,8 +6,7 @@ import * as trpc from '@trpc/server';
 export const router = trpc
 	.router<Context>()
 	.query('ping', {
-		resolve: ({ ctx }) => {
-			console.log(ctx.user);
+		resolve: () => {
 			return 'pong';
 		}
 	})

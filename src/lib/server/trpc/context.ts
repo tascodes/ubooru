@@ -1,9 +1,6 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
-
 import * as trpc from '@trpc/server';
 import type { inferAsyncReturnType } from '@trpc/server';
 import { verifyJWT } from '../util/auth';
-import type { CreateHTTPContextOptions } from '@trpc/server/adapters/standalone';
 
 export async function createContext(request: Request) {
 	async function getUserFromHeader() {
