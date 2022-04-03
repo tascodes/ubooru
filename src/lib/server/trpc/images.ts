@@ -5,12 +5,12 @@ import { TRPCError } from '@trpc/server';
 import type { Post } from '@prisma/client';
 import { buildTagSearchQuery } from '../db/buildTagSearchQuery';
 import { parseTags } from '../util/parseTags';
+import { createRouter } from './context';
 
 const CLOUDFLARE_IMAGES_API_TOKEN = import.meta.env.VITE_CLOUDFLARE_IMAGES_API_TOKEN;
 const CLOUDFLARE_IMAGES_ACCOUNT_ID = import.meta.env.VITE_CLOUDFLARE_IMAGES_ACCOUNT_ID;
 
-export default trpc
-	.router()
+export default createRouter()
 	.query('upload', {
 		resolve: async (): Promise<{ id: string; uploadURL: string }> => {
 			const directUploadUrl = `https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_IMAGES_ACCOUNT_ID}/images/v2/direct_upload`;
@@ -78,14 +78,9 @@ export default trpc
 					});
 				}
 
-				const publicUrl = imageUrls.find((url) => url.endsWith('/public'));
-				const thumbnailUrl = imageUrls.find((url) => url.endsWith('/thumbnail'));
-
 				return prisma.post.create({
 					data: {
 						title: input.title,
-						url: publicUrl,
-						thumbnailUrl: thumbnailUrl,
 						imageId: input.imageId,
 						tags: {
 							create: input.tags.map((tagName) => {

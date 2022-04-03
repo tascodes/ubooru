@@ -1,4 +1,5 @@
-import { createContext, router } from '$lib/server/trpc';
+import { router } from '$lib/server/trpc';
+import { createContext } from '$lib/server/trpc/context';
 import { createTRPCHandle } from 'trpc-sveltekit';
 
 export const handle = createTRPCHandle({ url: '/trpc', router, createContext });

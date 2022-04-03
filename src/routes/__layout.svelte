@@ -2,7 +2,7 @@
 	import '../app.css';
 </script>
 
-<div class="layout-container mx-auto sm:px-6 lg:px-8 min-h-screen w-full">
+<div class="layout-container sm:px-6 lg:px-8 min-h-screen min-w-full">
 	<slot />
 </div>
 
