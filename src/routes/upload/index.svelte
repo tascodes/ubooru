@@ -77,7 +77,7 @@
 </script>
 
 <Dropzone
-	maxsize={MAX_FILE_SIZE}
+	maxSize={MAX_FILE_SIZE}
 	on:drop={handleFilesSelect}
 	accept={['image/*']}
 	containerClasses="custom-dropzone"

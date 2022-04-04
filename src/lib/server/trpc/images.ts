@@ -36,7 +36,7 @@ export default createRouter()
 		input: z.object({
 			title: z.string().max(128).optional(),
 			imageId: z.string(),
-			tags: z.array(z.string())
+			tags: z.array(z.string()).optional()
 		}),
 		resolve: async ({ input, ctx }): Promise<Post> => {
 			if (!ctx.user) {
@@ -85,12 +85,14 @@ export default createRouter()
 					});
 				}
 
+				const tags = input.tags || [];
+
 				return prisma.post.create({
 					data: {
 						title: input.title,
 						imageId: input.imageId,
 						tags: {
-							create: input.tags.map((tagName) => {
+							create: tags.map((tagName) => {
 								return {
 									tag: {
 										connectOrCreate: {

@@ -1,13 +1,35 @@
 import * as jwt from 'jsonwebtoken';
+import cookie from 'cookie';
 
 const JWT_SECRET = import.meta.env.VITE_JWT_SECRET;
+
+export const getUserFromHeader = async (request: Request) => {
+	const cookieHeader = request.headers.get('cookie');
+
+	if (!cookieHeader) {
+		return null;
+	}
+
+	const { jwt } = cookie.parse(cookieHeader);
+
+	if (jwt) {
+		try {
+			const { user } = verifyJWT(jwt);
+			return user || null;
+		} catch (e) {
+			return null;
+		}
+	}
+
+	return null;
+};
 
 export const verifyJWT = (token: string) => {
 	if (!JWT_SECRET) {
 		throw new Error('No JWT_SECRET');
 	}
 
-	let user: string | undefined;
+	let user: { id: string; name: string } | undefined;
 	let exp: number | undefined;
 
 	jwt.verify(token, JWT_SECRET, (err, decodedToken) => {
