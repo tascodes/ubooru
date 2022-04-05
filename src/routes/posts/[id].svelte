@@ -47,12 +47,13 @@
 	};
 </script>
 
-<div class="flex-1 relative z-0 flex overflow-hidden min-h-screen">
-	<main class="flex-1 relative z-0 overflow-y-auto focus:outline-none xl:order-last">
+<div class="flex-1 relative z-0 flex min-h-screen">
+	<main class="flex-1 relative z-0 focus:outline-none xl:order-last">
 		<div class="mb-16 mt-4 mx-4 max-h-full">
 			<img
 				class:fit-vertical={previewSize === 'Fit (Vertical)'}
 				class:fit-horizontal={previewSize === 'Fit (Horizontal)'}
+				class:full-size={previewSize === 'Original'}
 				src={postURL}
 				alt=""
 			/>
@@ -70,6 +71,8 @@
 					>
 						<option>Original</option>
 						<option>Sample (850px)</option>
+						<option>Fit (Horizontal)</option>
+						<option>Fit (Vertical)</option>
 					</select>
 				</div>
 			</div>
@@ -91,7 +94,28 @@
 			>
 				<option>Original</option>
 				<option>Sample (850px)</option>
+				<option>Fit (Horizontal)</option>
+				<option>Fit (Vertical)</option>
 			</select>
 		</div>
 	</aside>
 </div>
+
+<style>
+	.full-size {
+		max-width: unset;
+		max-height: unset;
+	}
+
+	.fit-vertical {
+		max-width: unset;
+		max-height: calc(100vh - 2rem);
+		height: calc(100vh - 2rem);
+	}
+
+	.fit-horizontal {
+		max-width: 100%;
+		width: 100%;
+		max-height: unset;
+	}
+</style>

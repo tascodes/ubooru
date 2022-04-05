@@ -7,7 +7,9 @@ export interface PostToUpload {
 	file: File;
 	preview: string;
 	title?: string;
-	tags: string[];
+	tags: {
+		[key: string]: boolean;
+	};
 	status: string;
 }
 

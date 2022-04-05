@@ -6,6 +6,7 @@ import { createTRPCHandle } from 'trpc-sveltekit';
 
 export const handle: Handle = async (input) => {
 	const user = await getUserFromHeader(input.event.request);
+
 	if (user) {
 		input.event.locals.user = user;
 	}

@@ -1,7 +1,22 @@
 <script lang="ts">
 	import { uploadImages, type PostToUpload } from '$lib/client/uploadImage';
+	import TagCheckbox from '$lib/components/TagCheckbox.svelte';
+	import WideSlideover from '$lib/components/WideSlideover.svelte';
 	import { formatFileSize, removeFileExtension } from '$lib/util/formatters';
 	import Dropzone from 'svelte-file-dropzone';
+
+	const genderPresetTags = [
+		'male',
+		'female',
+		'nonbinary',
+		'transgender',
+		'intersex',
+		'ambiguous_gender'
+	];
+
+	const countPresetTags = ['solo', 'duo', 'group', 'zero_pictured'];
+
+	const bodyTypePresetTags = ['anthro', 'feral', 'humanoid', 'human', 'taur'];
 
 	// 20 MB maximum for Cloudflare
 	const MAX_FILE_SIZE = 20 * 1000000;
@@ -10,7 +25,9 @@
 	let runningId = 0;
 	let uploading = false;
 
-	const handleFilesSelect = (e: any) => {
+	let selectedPost: PostToUpload | null = null;
+
+	const onFilesSelect = (e: any) => {
 		const { acceptedFiles } = e.detail;
 		const addedPosts: PostToUpload[] = acceptedFiles
 			.filter((file: File) => {
@@ -21,22 +38,22 @@
 				file,
 				preview: URL.createObjectURL(file),
 				title: removeFileExtension(file.name),
-				tags: [],
+				tags: {},
 				status: 'idle'
 			}));
 		posts = [...posts, ...addedPosts];
 	};
 
-	const handleRemoveFile = (e: any, index: number) => {
+	const onRemoveFile = (e: any, index: number) => {
 		posts.splice(index, 1);
 		posts = posts;
 	};
 
-	const handleRemoveAll = () => {
+	const onRemoveAll = () => {
 		posts = [];
 	};
 
-	const handleClearAllTitles = () => {
+	const onClearAllTitles = () => {
 		posts.forEach((_, idx) => {
 			posts[idx].title = '';
 		});
@@ -74,11 +91,24 @@
 			}
 		});
 	};
+
+	const onTagCheckboxChanged = (
+		selectedPost: PostToUpload | null,
+		{ tagName, checked }: { tagName: string; checked: boolean }
+	) => {
+		if (!selectedPost) {
+			return;
+		}
+
+		selectedPost.tags[tagName] = checked;
+
+		console.log(selectedPost.tags);
+	};
 </script>
 
 <Dropzone
 	maxSize={MAX_FILE_SIZE}
-	on:drop={handleFilesSelect}
+	on:drop={onFilesSelect}
 	accept={['image/*']}
 	containerClasses="custom-dropzone"
 >
@@ -88,11 +118,11 @@
 	<p>Drag and drop them here</p>
 </Dropzone>
 <div class="mb-16">
-	{#if posts.length > 0}
+	{#if posts?.length > 0}
 		<div class="flex justify-between items-center w-full my-8">
 			<div class="flex space-x-6 items-center">
 				<button
-					on:click={handleRemoveAll}
+					on:click={onRemoveAll}
 					disabled={uploading}
 					type="button"
 					class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-focus"
@@ -113,7 +143,7 @@
 				</button>
 
 				<button
-					on:click={handleClearAllTitles}
+					on:click={onClearAllTitles}
 					disabled={uploading}
 					type="button"
 					class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-focus"
@@ -158,14 +188,20 @@
 						alt=""
 						class="object-contain p-4 pointer-events-none group-hover:opacity-75"
 					/>
-					<button type="button" class="absolute inset-0 focus:outline-none">
-						<span class="sr-only">View details for {item.file.name}</span>
+					<button
+						on:click={() => {
+							selectedPost = item;
+						}}
+						type="button"
+						class="absolute inset-0 focus:outline-none"
+					>
+						<span class="sr-only">Edit tags for {item.title || item.file.name}</span>
 					</button>
 				</div>
 				{#if !uploading}
 					<button
 						type="button"
-						on:click={(e) => handleRemoveFile(e, index)}
+						on:click={(e) => onRemoveFile(e, index)}
 						class="absolute z-10 top-[-0.5rem] right-[-0.5rem] inline-flex items-center p-1 border border-transparent rounded-full shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-focus"
 					>
 						<svg
@@ -202,4 +238,25 @@
 			</li>
 		{/each}
 	</ul>
+
+	<WideSlideover
+		on:close={() => {
+			selectedPost = null;
+		}}
+		open={!!selectedPost}
+		title={selectedPost?.title || selectedPost?.file.name}
+	>
+		<div class="border border-solid drop-shadow-md border-gray-200 p-4 rounded max-h-min max-w-min">
+			<img alt="" class="inline-block max-h-[24rem] max-w-[24rem]" src={selectedPost?.preview} />
+		</div>
+		{#each genderPresetTags as tag}
+			<TagCheckbox
+				on:change={(event) => {
+					onTagCheckboxChanged(selectedPost, event.detail);
+				}}
+				checked={!!selectedPost?.tags[tag]}
+				tagName={tag}
+			/>
+		{/each}
+	</WideSlideover>
 </div>
