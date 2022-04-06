@@ -8,7 +8,12 @@ export interface PostToUpload {
 	preview: string;
 	title?: string;
 	tags: {
-		[key: string]: boolean;
+		presets: {
+			[key: string]: boolean;
+		};
+		character: string;
+		species: string;
+		other: string;
 	};
 	status: string;
 }
@@ -25,7 +30,18 @@ const uploadImage = async ({ post }: { post: PostToUpload }) => {
 		mode: 'no-cors'
 	});
 
-	return trpcClient.mutation('images.publish', { title: post.title, imageId: id });
+	const presetTags = Object.entries(post.tags.presets)
+		.filter(([, value]) => !!value)
+		.map(([key]) => key);
+	const customTags = [
+		...post.tags.character.trim().split(/\s+/g),
+		...post.tags.species.trim().split(/\s+/g),
+		...post.tags.other.trim().split(/\s+/g)
+	];
+
+	const tags = [...new Set([...presetTags, ...customTags])];
+
+	return trpcClient.mutation('images.publish', { title: post.title, imageId: id, tags });
 };
 
 export const uploadImages = async ({
