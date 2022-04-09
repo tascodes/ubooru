@@ -2,4 +2,5 @@ interface ImportMetaEnv {
 	VITE_CLOUDFLARE_IMAGES_API_TOKEN?: string;
 	VITE_CLOUDFLARE_IMAGES_ACCOUNT_ID?: string;
 	VITE_JWT_SECRET?: string;
+	VITE_PRODUCTION_BASE_URL?: string;
 }

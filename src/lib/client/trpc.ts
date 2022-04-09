@@ -3,8 +3,14 @@ import type { Router } from '$lib/server/trpc';
 import * as trpc from '@trpc/client';
 import type { inferProcedureInput, inferProcedureOutput } from '@trpc/server';
 
+const NODE_ENV = import.meta.env.VITE_NODE_ENV || 'development';
+const PRODUCTION_BASE_URL = import.meta.env.VITE_PRODUCTION_BASE_URL;
+
+const trpcBaseURL =
+	NODE_ENV === 'development' ? 'http://localhost:3000' : PRODUCTION_BASE_URL || '';
+
 export default trpc.createTRPCClient<Router>({
-	url: browser ? '/trpc' : 'http://localhost:3000/trpc'
+	url: browser ? '/trpc' : `${trpcBaseURL}/trpc`
 });
 
 type Query = keyof Router['_def']['queries'];
