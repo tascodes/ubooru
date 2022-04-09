@@ -3,10 +3,10 @@
 	"version": "0.0.1",
 	"scripts": {
 		"dev": "svelte-kit dev",
-		"build": "svelte-kit build",
+		"build": "NODE_ENV=production VITE_NODE_ENV=production svelte-kit build && prisma migrate deploy",
 		"package": "svelte-kit package",
 		"preview": "svelte-kit preview",
-		"serve": "node ./build",
+		"serve": "NODE_ENV=production VITE_NODE_ENV=production node ./build",
 		"prepare": "svelte-kit sync",
 		"check": "svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-check --tsconfig ./tsconfig.json --watch",
