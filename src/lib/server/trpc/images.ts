@@ -85,7 +85,7 @@ export default createRouter()
 					});
 				}
 
-				const tags = input.tags || [];
+				const tags = input.tags?.map((tag) => tag.toLowerCase()) || [];
 
 				return prisma.post.create({
 					data: {

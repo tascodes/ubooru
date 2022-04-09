@@ -8,7 +8,8 @@ export const parseTags = (tagQuery: string): ParseTagsResult => {
 	const splitTags = tagQuery
 		.trim()
 		.split(/ +/)
-		.filter((tag) => tag.length > 0);
+		.filter((tag) => tag.length > 0)
+		.map((tag) => tag.toLowerCase());
 
 	const andTags: string[] = [];
 	const notTags: string[] = [];
