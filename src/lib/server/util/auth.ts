@@ -6,6 +6,8 @@ const JWT_SECRET = import.meta.env.VITE_JWT_SECRET;
 export const getUserFromHeader = async (request: Request) => {
 	const cookieHeader = request.headers.get('cookie');
 
+	const x = '';
+
 	if (!cookieHeader) {
 		return null;
 	}
