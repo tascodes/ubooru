@@ -1,4 +1,4 @@
-const jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken';
 import cookie from 'cookie';
 
 const JWT_SECRET = import.meta.env.VITE_JWT_SECRET;
@@ -36,7 +36,7 @@ export const verifyJWT = (token: string) => {
 		if (err || !decodedToken) {
 			throw new Error('Failed to verify token.');
 		}
-		const token = decodedToken;
+		const token = decodedToken as jwt.JwtPayload;
 		exp = token.exp;
 		user = token.user;
 	});
@@ -51,8 +51,6 @@ export const createJWT = ({ userId, userName }: { userId: string; userName: stri
 	if (!JWT_SECRET) {
 		throw new Error('No JWT_SECRET');
 	}
-
-	console.log(jwt);
 
 	const exp = Math.round(Date.now() / 1000) + 86400;
 	const token = jwt.sign({ exp, user: { name: userName, id: userId } }, JWT_SECRET, {
