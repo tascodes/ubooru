@@ -1,12 +1,10 @@
-import * as jwt from 'jsonwebtoken';
+import { sign, verify } from 'jsonwebtoken';
 import cookie from 'cookie';
 
 const JWT_SECRET = import.meta.env.VITE_JWT_SECRET;
 
 export const getUserFromHeader = async (request: Request) => {
 	const cookieHeader = request.headers.get('cookie');
-
-	const x = '';
 
 	if (!cookieHeader) {
 		return null;
@@ -34,7 +32,7 @@ export const verifyJWT = (token: string) => {
 	let user: { id: string; name: string } | undefined;
 	let exp: number | undefined;
 
-	jwt.verify(token, JWT_SECRET, (err, decodedToken) => {
+	verify(token, JWT_SECRET, (err, decodedToken) => {
 		if (err || !decodedToken) {
 			throw new Error('Failed to verify token.');
 		}
@@ -54,8 +52,10 @@ export const createJWT = ({ userId, userName }: { userId: string; userName: stri
 		throw new Error('No JWT_SECRET');
 	}
 
+	console.log(sign);
+
 	const exp = Math.round(Date.now() / 1000) + 86400;
-	const token = jwt.sign({ exp, user: { name: userName, id: userId } }, JWT_SECRET, {
+	const token = sign({ exp, user: { name: userName, id: userId } }, JWT_SECRET, {
 		algorithm: 'HS256'
 	});
 	return token;
