@@ -17,10 +17,11 @@ model User {
 }
 
 model Post {
-  id      Int           @id @default(autoincrement())
-  title   String?
-  imageId String
-  tags    TagsOnPosts[]
+  id       Int           @id @default(autoincrement())
+  title    String?
+  imageId  String
+  tags     TagsOnPosts[]
+  archived Boolean       @default(false)
 }
 
 model Tag {

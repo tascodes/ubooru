@@ -110,10 +110,25 @@ export default createRouter()
 			}
 		}
 	})
+	.mutation('archive', {
+		input: z.object({ id: z.number() }),
+		resolve: async ({ input, ctx }) => {
+			if (!ctx.user) {
+				throw new TRPCError({ code: 'UNAUTHORIZED' });
+			}
+
+			return prisma.post.update({ where: { id: input.id }, data: { archived: true } });
+		}
+	})
 	.query('byId', {
 		input: z.object({ id: z.number() }),
-		resolve: async ({ input }) => {
-			return prisma.post.findFirst({ where: { id: input.id } });
+		resolve: async ({ input, ctx }) => {
+			if (ctx.user) {
+				// Admin can see archived posts by ID.
+				return prisma.post.findFirst({ where: { id: input.id } });
+			}
+
+			return prisma.post.findFirst({ where: { id: input.id, archived: false } });
 		}
 	})
 	.query('byTags', {
