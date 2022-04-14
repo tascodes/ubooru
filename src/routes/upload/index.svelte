@@ -1,24 +1,8 @@
 <script lang="ts">
 	import { uploadImages, type PostToUpload } from '$lib/client/uploadImage';
-	import TagCheckbox from '$lib/components/TagCheckbox.svelte';
 	import TagSlideover from '$lib/components/TagSlideover.svelte';
-	import WideSlideover from '$lib/components/WideSlideover.svelte';
 	import { formatFileSize, removeFileExtension } from '$lib/util/formatters';
-	import { trim } from 'lodash';
 	import Dropzone from 'svelte-file-dropzone';
-
-	const genderPresetTags = [
-		'male',
-		'female',
-		'nonbinary',
-		'transgender',
-		'intersex',
-		'ambiguous_gender'
-	];
-
-	const countPresetTags = ['solo', 'duo', 'group', 'zero_pictured'];
-
-	const bodyTypePresetTags = ['anthro', 'feral', 'humanoid', 'human', 'taur'];
 
 	// 20 MB maximum for Cloudflare
 	const MAX_FILE_SIZE = 20 * 1000000;
