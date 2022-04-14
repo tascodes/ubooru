@@ -1,6 +1,5 @@
-import pkg from '@prisma/client';
-const { Prisma } = pkg;
 import type { ParseTagsResult } from '$lib/server/util/parseTags';
+import { Prisma } from '@prisma/client';
 
 const MAX_COUNT_LIMIT = 12500;
 
@@ -90,10 +89,12 @@ const searchPostsNoCount = ({
 				? Prisma.sql`
 					FROM "Post" p, "TagsOnPosts" tp, "Tag" t
 					WHERE p.id = tp."postId"
+					AND p.archived = false
 					AND tp."tagId" = t.id
 				`
 				: Prisma.sql`
 					FROM "Post" p
+					WHERE p.archived = false
 				`
 		}
     ${cursor ? cursorFilter(cursor) : Prisma.sql``}
@@ -137,14 +138,14 @@ const searchPostsWithCount = ({
 					? Prisma.sql`
 						FROM "Post" p, "TagsOnPosts" tp, "Tag" t
 						WHERE p.id = tp."postId"
+						AND p.archived = false
     				AND tp."tagId" = t.id
 					`
 					: Prisma.sql`
 						FROM "Post" p
+						WHERE p.archived = false
 					`
 			}
-      WHERE p.id = tp."postId"
-    	AND tp."tagId" = t.id
       ${cursor ? cursorFilter(cursor) : Prisma.sql``}
       ${
 				and?.length ? andTagFilter(and) : Prisma.sql`` // Include all posts with the "and" tags, if there are "and" tags
