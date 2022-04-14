@@ -1,5 +1,6 @@
 import type { ParseTagsResult } from '$lib/server/util/parseTags';
-import { Prisma } from '@prisma/client';
+import pkg from '@prisma/client';
+const { Prisma } = pkg;
 
 const MAX_COUNT_LIMIT = 12500;
 
