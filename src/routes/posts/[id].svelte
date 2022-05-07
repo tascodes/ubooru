@@ -38,14 +38,26 @@
 	export let post: Post;
 	export let searchQuery = '';
 
+	let sampleImage = getSample(post.imageId);
+	let fullImage = getFull(post.imageId);
+
 	let previewSize = 'Sample (850px)';
-	$: postURL = previewSize === 'Sample (850px)' ? getSample(post.imageId) : getFull(post.imageId);
+	$: postURL = previewSize === 'Sample (850px)' ? sampleImage : fullImage;
 
 	const onSearch = async (event: CustomEvent<string>) => {
 		const url = buildUrl('/posts', { queryParams: { tags: event.detail.trim() } });
 		goto(url);
 	};
 </script>
+
+<svelte:head>
+	<meta content={post?.title || 'Untitled Post'} property="og:title" />
+	<meta content="kobolds.moe" property="og:site_name" />
+	{#if sampleImage}
+		<meta content={sampleImage} property="og:image" />
+	{/if}
+	<meta name="twitter:card" content="summary_large_image" />
+</svelte:head>
 
 <div class="flex-1 relative z-0 flex min-h-screen">
 	<main class="flex-1 relative z-0 focus:outline-none xl:order-last">
