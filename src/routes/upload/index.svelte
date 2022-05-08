@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { uploadImages, type PostToUpload } from '$lib/client/uploadImage';
+	import { uploadImages, UploadStatus, type PostToUpload } from '$lib/client/uploadImage';
 	import TagSlideover from '$lib/components/TagSlideover.svelte';
 	import { formatFileSize, removeFileExtension } from '$lib/util/formatters';
 	import Dropzone from 'svelte-file-dropzone';
@@ -29,7 +29,7 @@
 					character: '',
 					species: ''
 				},
-				status: 'idle'
+				status: UploadStatus.PENDING
 			}));
 		posts = [...posts, ...addedPosts];
 	};
@@ -58,14 +58,14 @@
 				const idx = posts.findIndex((post: PostToUpload) => {
 					return post.id === task.id;
 				});
-				posts[idx].status = 'uploading';
+				posts[idx].status = UploadStatus.UPLOADING;
 				posts = posts;
 			},
 			done: (task, _post) => {
 				const idx = posts.findIndex((p: PostToUpload) => {
 					return p.id === task.id;
 				});
-				posts[idx].status = 'uploaded';
+				posts[idx].status = UploadStatus.UPLOADED;
 				posts = posts;
 			},
 			error: (task, error) => {
@@ -73,7 +73,7 @@
 				const idx = posts.findIndex((p: PostToUpload) => {
 					return p.id === task.id;
 				});
-				posts[idx].status = 'failed';
+				posts[idx].status = UploadStatus.FAILED;
 				posts = posts;
 			},
 			drain: () => {
@@ -81,6 +81,19 @@
 			}
 		});
 	};
+
+	function formatItemStatus(status: UploadStatus) {
+		switch (status) {
+			case UploadStatus.PENDING:
+				return 'Pending';
+			case UploadStatus.UPLOADING:
+				return 'Uploading';
+			case UploadStatus.UPLOADED:
+				return 'Uploaded';
+			case UploadStatus.FAILED:
+				return 'Failed to upload';
+		}
+	}
 
 	const onSlideoverClose = () => {
 		if (!selectedPost) {
@@ -233,7 +246,7 @@
 					{formatFileSize(item.file.size)}
 				</p>
 				<p class="block text-sm font-medium text-gray-500 pointer-events-none">
-					{item.status}
+					{formatItemStatus(item.status)}
 				</p>
 			</li>
 		{/each}

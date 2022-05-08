@@ -15,7 +15,14 @@ export interface PostToUpload {
 		species: string;
 		other: string;
 	};
-	status: string;
+	status: UploadStatus;
+}
+
+export enum UploadStatus {
+	PENDING = 'PENDING',
+	UPLOADING = 'UPLOADING',
+	UPLOADED = 'UPLOADED',
+	FAILED = 'FAILED'
 }
 
 const uploadImage = async ({ post }: { post: PostToUpload }) => {
