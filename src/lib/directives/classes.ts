@@ -8,11 +8,6 @@ export function classes(node: HTMLElement, classes: { [key: string]: boolean }) 
 	};
 }
 
-/**
- *
- * @param {HTMLElement} node
- * @param {{[key: string]: string}} classes
- */
 function setCustomClasses(node: HTMLElement, classes: { [key: string]: boolean }) {
 	Object.entries(classes).forEach(([key, value]) => {
 		if (value) {

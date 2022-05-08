@@ -5,10 +5,12 @@ module.exports = {
 	theme: {
 		extend: {},
 		colors: ({ colors }) => ({
-			// This is the main color of your UI - it determines some buttons, icons, and lots of other branding.
+			// Edit-Me: This is the main color of your UI - it determines some buttons, icons, and lots of other branding.
 			primary: colors.sky,
 
 			/**
+			 * Edit-Me: Edit this to customize your UI colors
+			 *
 			 * If you want to define more specific primary colors:
 			 *  - Uncomment the below `primary:` block
 			 *  - Comment out or delete the above `primary:` line
