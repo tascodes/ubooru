@@ -6,7 +6,7 @@ export default {
 		/**
 		 * The base URL for cloudflare-hosted images. By default this is `https://imagedelivery.net/{your cloudflare user id}`
 		 */
-		imagesBaseUrl: 'https://imagedelivery.net/R6wzA5Dnx3ftIbCRXX7zgw',
+		imagesBaseUrl: import.meta.env.VITE_CLOUDFLARE_IMAGES_BASE_URL,
 
 		/**
 		 * A list of variants configured in cloudflare
