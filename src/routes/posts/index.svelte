@@ -2,6 +2,7 @@
 	import type { Post } from '@prisma/client';
 	import type { Load } from '@sveltejs/kit';
 	import { stringToInt } from '$lib/util/formatters';
+	import { isNil, isNumber } from 'lodash';
 
 	export const load: Load = async ({ url }) => {
 		let tags = url.searchParams.get('tags');
@@ -52,7 +53,6 @@
 	import PageSelect from '$lib/components/Pagination/PageSelect.svelte';
 	import { postStore } from '$lib/client/postStore';
 	import { get } from 'svelte/store';
-	import { isNil, isNumber } from 'lodash';
 
 	export let posts: Post[];
 	export let search = '';
