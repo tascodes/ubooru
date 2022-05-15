@@ -40,7 +40,6 @@
 
 	$: maxPage = Math.ceil(totalCount / pageSize);
 
-	console.log(Math.ceil(totalCount / pageSize));
 	$: previousUrl = buildUrl(baseUrl, { queryParams: { ...existingParams, page: pageNumber - 1 } });
 	$: nextUrl = buildUrl(baseUrl, { queryParams: { ...existingParams, page: pageNumber + 1 } });
 </script>
