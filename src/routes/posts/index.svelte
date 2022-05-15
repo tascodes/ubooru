@@ -2,7 +2,7 @@
 	import type { Post } from '@prisma/client';
 	import type { Load } from '@sveltejs/kit';
 	import { stringToInt } from '$lib/util/formatters';
-	import { isNil, isNumber } from 'lodash';
+	import _ from 'lodash';
 
 	export const load: Load = async ({ url }) => {
 		let tags = url.searchParams.get('tags');
@@ -23,9 +23,9 @@
 		const storeVal = get(postStore);
 		let postCount = storeVal.count;
 
-		const { posts, count } = await getPosts(tags, pageNumber, 50, isNil(postCount));
+		const { posts, count } = await getPosts(tags, pageNumber, 50, _.isNil(postCount));
 
-		if (isNumber(count)) {
+		if (_.isNumber(count)) {
 			postCount = count;
 		}
 

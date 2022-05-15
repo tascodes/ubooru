@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { buildUrl } from '$lib/util/urlBuilder';
-	import { isNumber } from 'lodash';
+	import _ from 'lodash';
 
 	import { getPageOptions } from './pagination';
 
@@ -31,7 +31,7 @@
 		: {};
 
 	$: pageUrls = pageOptions.map((option): string => {
-		if (!isNumber(option)) {
+		if (!_.isNumber(option)) {
 			return '#';
 		}
 
