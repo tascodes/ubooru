@@ -61,7 +61,7 @@
 			</a>
 		{:else}
 			<span
-				class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-gray-300 cursor-not-allowed"
+				class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-gray-200 cursor-not-allowed"
 			>
 				Previous
 			</span>
@@ -76,7 +76,7 @@
 		{:else}
 			<span
 				href={nextUrl}
-				class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-gray-300 cursor-not-allowed"
+				class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-gray-200 cursor-not-allowed"
 			>
 				Next
 			</span>
@@ -122,7 +122,7 @@
 					</a>
 				{:else}
 					<span
-						class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-gray-300 cursor-not-allowed text-sm font-medium text-gray-500"
+						class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-gray-200 cursor-not-allowed text-sm font-medium text-gray-500"
 					>
 						<span class="sr-only">Previous</span>
 						<!-- Heroicon name: solid/chevron-left -->
