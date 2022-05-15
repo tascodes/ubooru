@@ -157,9 +157,9 @@ const searchPostsWithCount = ({
       GROUP BY p.id
       ${and?.length ? andTagHavingCount(and) : Prisma.sql``}
       ${getOrderBy(sort)}
-      ${offset && !cursor ? offsetStatement(offset) : Prisma.sql``}
       LIMIT ${MAX_COUNT_LIMIT}
     ) m
+		${offset && !cursor ? offsetStatement(offset) : Prisma.sql``}
     LIMIT ${limit}
   `;
 };

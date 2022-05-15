@@ -32,3 +32,21 @@ export function formatFileSize(bytes: number, si = true, decimalPlaces = 1) {
 export function removeFileExtension(filename: string) {
 	return startCase(filename.substring(0, filename.lastIndexOf('.')) || filename);
 }
+
+/**
+ * Safely convert a string to an integer. Returns NaN if the string is not a number.
+ *
+ * @param str the input string
+ * @returns the parsed integer or NaN if not a number
+ */
+export function stringToInt(str: string): number {
+	let val = NaN;
+	if (str?.length) {
+		try {
+			val = Number.parseInt(str, 10);
+		} catch (_error) {
+			return NaN;
+		}
+	}
+	return val;
+}

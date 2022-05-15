@@ -136,11 +136,11 @@ export default createRouter()
 			tags: z.string().optional(),
 			cursor: z.number().optional(),
 			offset: z.number().optional(),
-			limit: z.number().min(1).max(150).optional(),
+			limit: z.number().min(1).max(150).default(50),
 			count: z.boolean().default(false)
 		}),
 		resolve: async ({ input }) => {
-			const limit = input.limit ?? 50;
+			const limit = input.limit || 50;
 			const tags = input.tags?.trim();
 			const { cursor, count, offset } = input;
 
