@@ -76,9 +76,7 @@
 				posts[idx].status = UploadStatus.FAILED;
 				posts = posts;
 			},
-			drain: () => {
-				console.log('all uploaded');
-			}
+			drain: () => {}
 		});
 	};
 
@@ -94,29 +92,6 @@
 				return 'Failed to upload';
 		}
 	}
-
-	const onSlideoverClose = () => {
-		if (!selectedPost) {
-			return;
-		}
-
-		selectedPost.tags.character = selectedPost.tags.character.replace(/\s+/g, ' ').trim();
-		selectedPost.tags.other = selectedPost.tags.other.replace(/\s+/g, ' ').trim();
-		selectedPost.tags.species = selectedPost.tags.species.replace(/\s+/g, ' ').trim();
-
-		selectedPost = null;
-	};
-
-	const onTagCheckboxChanged = (
-		selectedPost: PostToUpload | null,
-		{ tagName, checked }: { tagName: string; checked: boolean }
-	) => {
-		if (!selectedPost) {
-			return;
-		}
-
-		selectedPost.tags.presets[tagName] = checked;
-	};
 </script>
 
 <Dropzone
